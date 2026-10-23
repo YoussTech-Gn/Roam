@@ -14,6 +14,6 @@ export default function Index() {
   if (!isLoaded) return null; // native splash is still covering the screen
 
   return (
-    <Redirect href={isSignedIn ? "/(secured)/(tabs)" : "/(auth)/signInPage"} />
+    <Redirect href={isSignedIn ? "/(secured)/(tabs)" : "/(auth)/sign-in"} />
   );
 }
