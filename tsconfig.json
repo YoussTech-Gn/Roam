@@ -6,7 +6,10 @@
       "@/*": ["./*"],
       "@/src*": ["./src/*"],
       "@/assets/*": ["./assets/*"],
-      "@/components/*": ["./src/components/*"]
+      "@/components/*": ["./src/components/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/store/*": ["./src/store/*"]
     }
   },
   "include": [
