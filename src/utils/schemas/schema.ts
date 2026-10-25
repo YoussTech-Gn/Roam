@@ -15,3 +15,9 @@ export const signInSchema = z.object({
 
 export type signInFields = z.infer<typeof signInSchema>;
 export type signUpFields = z.infer<typeof signUpSchema>;
+
+export const verifySchema = z.object({
+  code: z.string().trim().length(6, "The code is 6 digits"),
+});
+
+export type verifyFields = z.infer<typeof verifySchema>;
