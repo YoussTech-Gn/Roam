@@ -1,10 +1,10 @@
 import { ALL_CURRENCIES, CurrencyPicker } from "@/components/CurrencyPicker";
 import { useSupabase } from "@/hooks/useSupabase";
+import { useUserStore } from "@/store/userStore";
 import {
   OnboardingFormValues,
   onboardingSchema,
-} from "@/lib/schemas/onboarding";
-import { useUserStore } from "@/store/userStore";
+} from "@/utils/schemas/onboarding";
 import { useUser } from "@clerk/expo";
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,7 +39,7 @@ export default function OnboardingScreen() {
   });
 
   const [selectedCurrency, setSelectedCurrency] = useState(
-    ALL_CURRENCIES.find((c) => c.code === "INR") ?? ALL_CURRENCIES[0],
+    ALL_CURRENCIES.find((c) => c.code === "CFA") ?? ALL_CURRENCIES[0],
   );
   const [pickerOpen, setPickerOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -108,7 +108,7 @@ export default function OnboardingScreen() {
 
     setCurrency(selectedCurrency.code);
     setNeedsOnboarding(false);
-    router.replace("/(root)/(tabs)");
+    router.replace("/(secured)/(tabs)");
   };
 
   return (
@@ -184,7 +184,7 @@ export default function OnboardingScreen() {
           ) : null}
 
           <TouchableOpacity
-            onPress={handleSubmit(handleSave)}
+            onPress={() => handleSubmit(handleSave)}
             disabled={saving}
             className="bg-brand-bg rounded-xl py-4 items-center"
             activeOpacity={0.85}
