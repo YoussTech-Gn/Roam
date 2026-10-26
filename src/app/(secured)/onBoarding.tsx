@@ -47,6 +47,7 @@ export default function OnboardingScreen() {
     const parsed = parseFloat(startingBalance.replace(/,/g, ""));
     setSaving(true);
     setError("");
+    console.log(startingBalance, parsed);
 
     const { error: updateError } = await authSupabase
       .from("users")
@@ -60,21 +61,24 @@ export default function OnboardingScreen() {
       return;
     }
 
-    const { data: defaultAccount, error: accountFetchError } =
-      await authSupabase
-        .from("accounts")
-        .select("id, balance")
-        .eq("user_id", user!.id)
-        .eq("is_default", true)
-        .single();
+    const { data: accountsData, error: accountFetchError } = await authSupabase
+      .from("accounts")
+      .select("id, balance")
+      .eq("user_id", user!.id)
+      .eq("is_default", true)
+      .limit(1); // يعيد مصفوفة بأمان مثل: [{ id: '...', balance: 0 }]
 
-    if (accountFetchError || !defaultAccount) {
+    if (accountFetchError || !accountsData || accountsData.length === 0) {
       setSaving(false);
       setError(GENERIC_ERROR);
-      console.log(accountFetchError, defaultAccount);
+      console.log(
+        "Account fetch error or empty:",
+        accountFetchError,
+        accountsData,
+      );
       return;
     }
-
+    const defaultAccount = accountsData[0];
     const { error: txError } = await authSupabase.from("transactions").insert({
       user_id: user!.id,
       account_id: defaultAccount.id,

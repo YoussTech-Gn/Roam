@@ -54,6 +54,7 @@ const CustomFormPage = <V extends FieldValues>({
                 control={control}
                 name={"firstName" as Path<V>}
                 placeholder="First name"
+                className="mb-4 px-3"
               />
             </View>
             <View className="flex-1">
@@ -61,6 +62,7 @@ const CustomFormPage = <V extends FieldValues>({
                 control={control}
                 name={"lastName" as Path<V>}
                 placeholder="Last name"
+                className="mb-4 px-3"
               />
             </View>
           </View>
@@ -73,6 +75,7 @@ const CustomFormPage = <V extends FieldValues>({
           keyboardType="email-address"
           autoComplete="email"
           autoCapitalize="none"
+          className="mb-2 px-3"
         />
         <CustomInput
           control={control}
@@ -80,6 +83,7 @@ const CustomFormPage = <V extends FieldValues>({
           placeholder="Enter your Password"
           secureTextEntry
           autoComplete={isSignUp ? "new-password" : "current-password"}
+          // className="mb-3"
         />
         <CustomBotton
           text={isSignUp ? "Create Account" : "Log In"}

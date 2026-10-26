@@ -47,7 +47,7 @@ export default function CustomInput<T extends FieldValues>({
             )}
           />
           {error ? (
-            <Text className="mt-1 text-xs text-destructive">
+            <Text className="mt-1 mb-2 text-xs text-destructive tracking-wide">
               {error.message}
             </Text>
           ) : null}
