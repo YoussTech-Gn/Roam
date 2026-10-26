@@ -6,9 +6,6 @@ import { useMemo } from "react";
 //  * Supabase client for public data
 //  * Use this for data that is public and doesn't require authentication
 //  */
-// export const usePublicSupabase = () => {
-//   return pubClient;
-// };
 
 /**
  * this function will create a supabase client with auth token for private data
@@ -17,7 +14,7 @@ import { useMemo } from "react";
  * and it will return a supabase client with auth token
  * use this client to access private data
  * and user/client data
- * we user memo hook to prevent re-creating the client on every render
+ * we used memo hook to prevent re-creating the client on every render
  */
 export const useSupabase = () => {
   const { getToken } = useAuth();

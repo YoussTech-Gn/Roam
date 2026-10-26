@@ -5,11 +5,15 @@ interface UserStore {
   setCurrency: (value: string) => void;
   needsOnboarding: boolean | null; // null = not yet determined
   setNeedsOnboarding: (value: boolean | null) => void;
+  syncFailed: boolean;
+  setSyncFailed: (value: boolean) => void;
 }
 
 export const useUserStore = create<UserStore>((set) => ({
-  currency: "CFA",
+  currency: "XOF",
   setCurrency: (value) => set({ currency: value }),
   needsOnboarding: null,
   setNeedsOnboarding: (value) => set({ needsOnboarding: value }),
+  syncFailed: false,
+  setSyncFailed: (value) => set({ syncFailed: value }),
 }));

@@ -22,6 +22,7 @@
     --ring: #d4d4d4;
     --accent: #f7f7f7;
     --accent-foreground: #343434;
+    --simple-text: #ececec;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -31,7 +32,7 @@
       --card: #171717;
       --secondary: #262626;
       --secondary-foreground: #fafafa;
-      --background: #0c0c0c;
+      --background: #050505;
       --popover: #171717;
       --popover-foreground: #fafafa;
       --muted: #262626;
@@ -43,6 +44,7 @@
       --ring: #737373;
       --accent: #262626;
       --accent-foreground: #fafafa;
+      --simple-text: #141414;
     }
   }
 }
@@ -65,4 +67,5 @@
   --color-ring: var(--ring);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-simple-text: var(--simple-text);
 }

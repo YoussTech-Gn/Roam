@@ -1,70 +1,58 @@
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import {
-  StyleSheet,
   Text,
   TextInput,
   TextInputProps,
   useColorScheme,
   View,
 } from "react-native";
+import { twMerge } from "tailwind-merge";
 
 type Props<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
-} & Omit<TextInputProps, "value" | "onChangeText">;
+  /** Classes for the input. They win over the defaults. */
+  className?: string;
+} & Omit<TextInputProps, "value" | "onChangeText" | "style" | "className">;
 
 export default function CustomInput<T extends FieldValues>({
   name,
   control,
+  className,
+  onBlur,
   ...inputProps
 }: Props<T>) {
-  const color = useColorScheme();
+  const scheme = useColorScheme();
+
   return (
-    <View className="mt-3 ">
-      <Controller
-        name={name}
-        control={control}
-        render={({
-          field: { onBlur, onChange, value },
-          fieldState: { error },
-        }) => (
-          <>
-            <TextInput
-              {...inputProps}
-              value={value}
-              onChangeText={onChange}
-              // onBlur={onBlur}
-              style={setStyle.input}
-              placeholderTextColor={color === "dark" ? "#8a8a8a" : "#555"}
-              className={`border text-base text-foreground bg-card ${
-                error ? "border-destructive" : "border-border"
-              }`}
-              {...inputProps}
-            />
-            {error && (
-              <View className="flex-row items-center gap-1 mt-2">
-                {/* <Ionicons name="alert-circle" color={"red"} size={13} /> */}
-                <Text className="text-red-300 font-bold mb-1">
-                  {error?.message}
-                </Text>
-              </View>
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <View>
+          <TextInput
+            {...inputProps}
+            value={field.value == null ? "" : String(field.value)}
+            onChangeText={field.onChange}
+            onBlur={(e) => {
+              field.onBlur();
+              onBlur?.(e);
+            }}
+            placeholderTextColor={scheme === "dark" ? "#a1a1a1" : "#737373"}
+            // Defaults first, your className last, so yours always wins.
+            className={twMerge(
+              "w-full rounded-xl border bg-input px-4 py-3 text-base text-foreground",
+              error ? "border-destructive" : "border-border",
+              className,
             )}
-          </>
-        )}
-      />
-    </View>
+          />
+          {error ? (
+            <Text className="mt-1 text-xs text-destructive">
+              {error.message}
+            </Text>
+          ) : null}
+        </View>
+      )}
+    />
   );
 }
-
-{
-  /* <Text className="text-destructive text-sm mt-1">{error.message}</Text>; */
-}
-
-const setStyle = StyleSheet.create({
-  input: {
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 13,
-    letterSpacing: 1,
-  },
-});

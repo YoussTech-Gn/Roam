@@ -1,38 +1,36 @@
 import { ALL_CURRENCIES, CurrencyPicker } from "@/components/CurrencyPicker";
 import { useSupabase } from "@/hooks/useSupabase";
+import CustomButton from "@/src/components/CustomButton";
+import CustomInput from "@/src/components/InputField";
+import { useUserSync } from "@/src/hooks/useUserSync";
 import { useUserStore } from "@/store/userStore";
 import {
   OnboardingFormValues,
   onboardingSchema,
 } from "@/utils/schemas/onboarding";
 import { useUser } from "@clerk/expo";
-import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Image,
   KeyboardAvoidingView,
   Platform,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
+const GENERIC_ERROR = "Something went wrong. Please try again.";
 
 export default function OnboardingScreen() {
   const { user } = useUser();
   const authSupabase = useSupabase();
   const setCurrency = useUserStore((s) => s.setCurrency);
   const setNeedsOnboarding = useUserStore((s) => s.setNeedsOnboarding);
+  const { retry } = useUserSync();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors: formErrors },
-  } = useForm<OnboardingFormValues>({
+  const { control, handleSubmit } = useForm<OnboardingFormValues>({
     resolver: zodResolver(onboardingSchema),
     mode: "onBlur",
     defaultValues: { startingBalance: "" },
@@ -52,14 +50,13 @@ export default function OnboardingScreen() {
 
     const { error: updateError } = await authSupabase
       .from("users")
-      .update({
-        currency: selectedCurrency.code,
-      })
+      .update({ currency: selectedCurrency.code })
       .eq("clerk_id", user!.id);
 
     if (updateError) {
       setSaving(false);
-      setError("Something went wrong. Please try again.");
+      setError(GENERIC_ERROR);
+      console.log(updateError);
       return;
     }
 
@@ -73,7 +70,8 @@ export default function OnboardingScreen() {
 
     if (accountFetchError || !defaultAccount) {
       setSaving(false);
-      setError("Something went wrong. Please try again.");
+      setError(GENERIC_ERROR);
+      console.log(accountFetchError, defaultAccount);
       return;
     }
 
@@ -90,7 +88,8 @@ export default function OnboardingScreen() {
 
     if (txError) {
       setSaving(false);
-      setError("Something went wrong. Please try again.");
+      setError(GENERIC_ERROR);
+      console.log(txError);
       return;
     }
 
@@ -102,7 +101,8 @@ export default function OnboardingScreen() {
     setSaving(false);
 
     if (balanceError) {
-      setError("Something went wrong. Please try again.");
+      setError(GENERIC_ERROR);
+      console.log(balanceError);
       return;
     }
 
@@ -111,88 +111,73 @@ export default function OnboardingScreen() {
     router.replace("/(secured)/(tabs)");
   };
 
+  // useEffect(() => {
+  //   retry;
+  // }, []);
+
   return (
-    <SafeAreaView className="flex-1 bg-brand-body" edges={["top"]}>
+    <View className="flex-1 bg-background">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
+        className="flex-1 bg-background"
       >
-        <View className="flex-1 px-6 justify-center -mt-16">
+        <View className="flex-1 justify-center px-6 -mt-16">
           <Image
             source={require("@/assets/images/welth.png")}
-            className="w-32 h-14 mb-10"
+            className="mb-10 h-14 w-32"
             resizeMode="contain"
           />
-          <Text className="text-[#1A1D26] text-3xl font-bold mb-2">
+
+          <Text className="mb-2 text-3xl font-bold text-foreground">
             Let&apos;s get you set up
           </Text>
-          <Text className="text-brand-text-muted text-sm mb-10">
+          <Text className="mb-10 text-sm text-muted-foreground">
             A couple of quick details to personalise your experience.
           </Text>
 
-          {/* Starting balance */}
-          <Text className="text-brand-bg text-xs font-medium mb-1.5">
+          {/* Starting balance: the input draws its own border and error */}
+          <Text className="mb-3 text-base font-medium tracking-wide text-foreground">
             Starting balance
           </Text>
-          <View className="flex-row items-center bg-white border border-[#E8E6DF] rounded-xl px-4 mb-1">
-            <Text className="text-brand-text-secondary text-sm mr-2">
-              {selectedCurrency.symbol}
-            </Text>
-            <Controller
+          <View>
+            <CustomInput
               control={control}
               name="startingBalance"
-              render={({ field: { value, onChange } }) => (
-                <TextInput
-                  value={value}
-                  onChangeText={(v) => {
-                    setError("");
-                    onChange(v);
-                  }}
-                  placeholder="e.g. 50000"
-                  placeholderTextColor="#8A8D96"
-                  keyboardType="numeric"
-                  returnKeyType="done"
-                  className="flex-1 py-3.5 text-sm text-brand-bg"
-                />
-              )}
+              placeholder="e.g. 50000"
+              keyboardType="numeric"
+              returnKeyType="done"
+              className="pl-14"
             />
+            <View pointerEvents="none" className="absolute left-4 top-3">
+              <Text className="text-base text-muted-foreground">
+                {selectedCurrency.symbol}
+              </Text>
+            </View>
           </View>
-          {formErrors.startingBalance && (
-            <Text className="text-brand-coral text-xs mb-4">
-              {formErrors.startingBalance.message}
-            </Text>
-          )}
+
           <View className="mb-4" />
 
           {/* Currency picker */}
-          <Text className="text-brand-bg text-xs font-medium mb-1.5">
+          <Text className="mb-3 text-base font-medium tracking-wide text-foreground">
             Currency
           </Text>
-          <TouchableOpacity
+          <CustomButton
+            className="mb-6 justify-between border border-border bg-input px-4 py-3.5"
+            textClassName="text-foreground"
             onPress={() => setPickerOpen(true)}
-            className="flex-row items-center justify-between bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 mb-6"
-          >
-            <Text className="text-sm text-brand-bg">
-              {selectedCurrency.symbol} {selectedCurrency.code} —{" "}
-              {selectedCurrency.name}
-            </Text>
-            <Feather name="chevron-down" size={16} color="#8A8D96" />
-          </TouchableOpacity>
+            text={`${selectedCurrency.symbol} ${selectedCurrency.code} - ${selectedCurrency.name}`}
+            name="chevron-down"
+          />
 
           {error ? (
-            <Text className="text-brand-coral text-xs mb-4">{error}</Text>
+            <Text className="mb-4 text-xs text-destructive">{error}</Text>
           ) : null}
 
-          <TouchableOpacity
-            onPress={() => handleSubmit(handleSave)}
-            disabled={saving}
-            className="bg-brand-bg rounded-xl py-4 items-center"
-            activeOpacity={0.85}
-          >
-            <Text className="text-white text-sm font-semibold">
-              {saving ? "Saving…" : "Get started"}
-            </Text>
-          </TouchableOpacity>
+          <CustomButton
+            text="Get started"
+            isPending={saving}
+            onPress={() => handleSubmit(handleSave)()}
+          />
         </View>
       </KeyboardAvoidingView>
 
@@ -205,6 +190,6 @@ export default function OnboardingScreen() {
         }}
         onClose={() => setPickerOpen(false)}
       />
-    </SafeAreaView>
+    </View>
   );
 }

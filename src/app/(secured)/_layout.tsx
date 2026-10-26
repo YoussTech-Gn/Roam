@@ -1,32 +1,42 @@
 import { useUserSync } from "@/hooks/useUserSync";
+import CustomBotton from "@/src/components/CustomButton";
 import { useUserStore } from "@/store/userStore";
 import { useAuth } from "@clerk/expo";
 import { Redirect, Slot, usePathname } from "expo-router";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 
 export default function RootGroupLayout() {
   const { isSignedIn, isLoaded } = useAuth();
-  const needsOnboarding = useUserStore((state) => state.needsOnboarding);
+  const needsOnboarding = useUserStore((s) => s.needsOnboarding);
+  const syncFailed = useUserStore((s) => s.syncFailed);
   const pathname = usePathname();
-  const [minLoadDone, setMinLoadDone] = useState(false);
 
-  useUserSync();
-
-  useEffect(() => {
-    const t = setTimeout(() => setMinLoadDone(true), 1500);
-    return () => clearTimeout(t);
-  }, []);
+  const { retry } = useUserSync();
 
   if (!isLoaded) return null;
   if (!isSignedIn) return <Redirect href="/sign-in" />;
-  if (!minLoadDone || needsOnboarding === null)
+
+  if (syncFailed)
     return (
-      <View className="flex-1 bg-brand-body items-center justify-center">
-        <ActivityIndicator size="large" color="#1A1D26" />
+      <View className="flex-1 bg-background items-center justify-center px-6">
+        <Text className="text-foreground text-lg font-bold mb-2">
+          Couldn&apos;t load your account
+        </Text>
+        <Text className="text-muted-foreground text-center mb-6">
+          Check your connection and try again.
+        </Text>
+        <CustomBotton text="Try again" onPress={retry} />
       </View>
     );
-  if (needsOnboarding && pathname !== "/onboarding")
+
+  if (needsOnboarding === null)
+    return (
+      <View className="flex-1 bg-background items-center justify-center">
+        <ActivityIndicator size="large" />
+      </View>
+    );
+
+  if (needsOnboarding && pathname.toLowerCase() !== "/onboarding")
     return <Redirect href="/(secured)/onBoarding" />;
 
   return <Slot />;

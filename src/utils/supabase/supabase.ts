@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
-const supabseKey = process.env.EXPO_PUBLIC_SUPABASE_URL!;
+const supabseKey = process.env.EXPO_PUBLIC_SUPABASE_KEY!;
 
 if (!supabseUrl || !supabseKey) {
   throw new Error("Missing Supabase env ");
@@ -20,7 +20,15 @@ export const createClerkSupabaseClient = (
 ) => {
   return createClient(supabseUrl, supabseKey, {
     async accessToken() {
-      return getToken();
+      const token = await getToken();
+      if (token) {
+        const exp = JSON.parse(atob(token.split(".")[1])).exp; // seconds
+        console.log(
+          "token expires in (s):",
+          exp - Math.floor(Date.now() / 1000),
+        );
+      }
+      return token;
     },
   });
 };
