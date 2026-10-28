@@ -35,8 +35,12 @@
         }
       ],
       "@clerk/expo",
-      "expo-secure-store"
-      // "@clerk/expo-native-components"
+      "expo-secure-store",
+      "expo-audio",
+      "expo-sharing",
+      "expo-image",
+      "expo-asset",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
