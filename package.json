@@ -49,12 +49,12 @@
     "react-native-gesture-handler": "~3.3.0",
     "react-native-gifted-charts": "^1.4.81",
     "react-native-reanimated": "^4.7.1",
-    "react-native-safe-area-context": "^5.10.1",
+    "react-native-safe-area-context": "~5.10.1",
     "react-native-screens": "~4.30.0",
     "react-native-svg": "^15.16.0",
     "react-native-ui-datepicker": "^3.3.0",
     "react-native-web": "~0.21.4",
-    "react-native-worklets": "^0.13.0",
+    "react-native-worklets": "0.13.0",
     "react-stately": "^3.51.0",
     "tailwind-variants": "^0.1.20",
     "zod": "^4.6.7",
@@ -83,5 +83,7 @@
     "lint": "expo lint",
     "open-android": "adb shell am start -a android.intent.action.VIEW -d roam://"
   },
-  "private": true
+  "private": true,
+  "description": "AI-powered personal finance app built with Expo and React Native",
+"keywords": ["expo", "react-native", "personal-finance", "expense-tracker", "supabase", "clerk"]
 }
