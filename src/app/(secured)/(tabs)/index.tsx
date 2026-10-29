@@ -8,18 +8,19 @@ import { useUserStore } from "@/store/userStore";
 import { Transaction } from "@/utils/services/transaction";
 import { formatPrice } from "@/utils/utils";
 import { useUser } from "@clerk/expo";
-import { Feather } from "@expo/vector-icons";
+// import { Feather } from "@expo/vector-icons";
 import { isSameMonth } from "date-fns";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
+import { ArrowDownRight, ArrowRight, ArrowUp, Camera, Edit2, Inbox, Mic, Plus, User } from "lucide-react-native";
 import { useMemo, useState } from "react";
 import {
-  ActivityIndicator,
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    RefreshControl,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -33,19 +34,19 @@ function getGreeting() {
 
 const QUICK_ACTIONS = [
   {
-    icon: "camera",
+    icon: Camera,
     label: "AI Receipt Scan",
     action: "scan",
     color: "#1A85FF",
   },
   {
-    icon: "mic",
+    icon: Mic,
     label: "Voice Entry",
     action: "voice",
     color: "#FF6B4A",
   },
   {
-    icon: "plus",
+    icon: Plus,
     label: "Add Manually",
     action: "manual",
     color: "#3DDC84",
@@ -168,7 +169,7 @@ export default function HomeScreen() {
                     contentFit="cover"
                   />
                 ) : (
-                  <Feather name="user" size={18} color="#8A8D96" />
+                  <User size={18} color="#8A8D96" />
                 )}
               </TouchableOpacity>
             </View>
@@ -183,13 +184,13 @@ export default function HomeScreen() {
             </Text>
             <View className="flex-row gap-3.5 mt-2.5">
               <View className="flex-row items-center gap-1.5">
-                <Feather name="arrow-up-right" size={14} color="#3DDC84" />
+                <ArrowUp  size={14} color="#3DDC84" />
                 <Text className="text-brand-success text-[13px]">
                   {formatPrice(monthIncome, currency)}
                 </Text>
               </View>
               <View className="flex-row items-center gap-1.5">
-                <Feather name="arrow-down-right" size={14} color="#FF6B4A" />
+                <ArrowDownRight  size={14} color="#FF6B4A" />
                 <Text className="text-brand-coral text-[13px]">
                   {formatPrice(monthExpense, currency)}
                 </Text>
@@ -214,7 +215,7 @@ export default function HomeScreen() {
                   className="w-9 h-9 rounded-full items-center justify-center"
                   style={{ backgroundColor: `${action.color}26` }}
                 >
-                  <Feather name={action.icon} size={17} color={action.color} />
+                  <action.icon size={17} color={action.color} />
                 </View>
                 <Text className="text-[#B8BAC2] text-[11px] font-medium text-center">
                   {action.label}
@@ -236,7 +237,7 @@ export default function HomeScreen() {
             <Text className="text-brand-text-muted text-[13px] flex-1">
               Ask AI anything about your money
             </Text>
-            <Feather name="arrow-right" size={16} color="#4A9EFF" />
+            <ArrowRight size={16} color="#4A9EFF" />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -248,7 +249,7 @@ export default function HomeScreen() {
               <Text className="text-[#1A1D26] text-sm font-medium">
                 Monthly budget
               </Text>
-              <Feather name="edit-2" size={13} color="#8A8D96" />
+              <Edit2  size={13} color="#8A8D96" />
             </View>
 
             {budget ? (
@@ -339,7 +340,7 @@ export default function HomeScreen() {
             </View>
           ) : recentTransactions.length === 0 ? (
             <View className="items-center py-6">
-              <Feather name="inbox" size={28} color="#BDC3C7" />
+              <Inbox size={28} color="#BDC3C7" />
               <Text className="text-brand-text-muted text-sm mt-3">
                 No transactions yet
               </Text>

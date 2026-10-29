@@ -4,9 +4,9 @@ import { PillGroup } from "@/src/components/PillGroup";
 import { ReceiptScannerModal } from "@/src/components/ReceiptScannerModal";
 import { VoiceRecorderModal } from "@/src/components/VoiceRecorderModal";
 import {
-  CategoryKey,
-  EXPENSE_CATEGORIES,
-  INCOME_CATEGORIES,
+    CategoryKey,
+    EXPENSE_CATEGORIES,
+    INCOME_CATEGORIES,
 } from "@/src/constants/categories";
 import { AI_GRADIENT, AI_GRADIENT_REVERSE } from "@/src/constants/theme";
 import { useCreateTransaction } from "@/src/hooks/mutations/useTransactionMutations";
@@ -14,27 +14,28 @@ import { useAccountQuery } from "@/src/hooks/queries/useAccountQuery";
 import { Account } from "@/src/types/account";
 import { ExtractedTransaction, InputMethod } from "@/src/types/transaction";
 import {
-  TransactionFormValues,
-  transactionSchema,
+    TransactionFormValues,
+    transactionSchema,
 } from "@/src/utils/schemas/transaction";
 import { extractTransactionFromReceipt } from "@/src/utils/services/extraTransaction";
 import { useUser } from "@clerk/expo";
-import { Feather } from "@expo/vector-icons";
+// import { Feather } from "lucide-react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, isValid } from "date-fns";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { AlertCircle, Calendar } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  ActivityIndicator,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -213,14 +214,15 @@ export default function AddTransactionScreen() {
           </View>
         ) : accountsError ? (
           <View className="flex-1 items-center justify-center px-10">
-            <Feather name="alert-circle" size={32} color="#FF6B4A" />
+            <AlertCircle  size={32} color="#FF6B4A" />
             <Text className="text-brand-text-muted text-sm mt-3 text-center">
               Couldn&apos;t load your accounts.
             </Text>
           </View>
         ) : accounts.length === 0 ? (
           <View className="flex-1 items-center justify-center px-10">
-            <Feather name="alert-circle" size={32} color="#FF6B4A" />
+                       <AlertCircle  size={32} color="#FF6B4A" />
+
             <Text className="text-brand-text-muted text-sm mt-3 text-center">
               You need an account before adding a transaction.
             </Text>
@@ -356,7 +358,7 @@ export default function AddTransactionScreen() {
               <Text className="text-sm text-brand-bg">
                 {format(date, "d MMM yyyy")}
               </Text>
-              <Feather name="calendar" size={16} color="#5C5F68" />
+              <Calendar size={16} color="#5C5F68" />
             </TouchableOpacity>
 
             {datePickerOpen && (

@@ -7,13 +7,14 @@ import { useUserStore } from "@/src/store/userStore";
 import { Account, AccountType } from "@/src/types/account";
 import { formatPrice } from "@/src/utils/utils";
 import { useAuth, useUser } from "@clerk/expo";
-import { Feather } from "@expo/vector-icons";
+// import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
     ActivityIndicator,
     Alert,
     Image,
+    // Image,
     ScrollView,
     Switch,
     Text,
@@ -22,14 +23,17 @@ import {
 } from "react-native";
 // import ImagePicker from "react-native-image-picker";
 import * as ImagePicker from "expo-image-picker";
+import { Camera, ChevronRight, CreditCard, DollarSign, Home, Lock, LogOut, Mail, Plus, Shield, User, type LucideProps } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const ACCOUNT_ICON: Record<AccountType, keyof typeof Feather.glyphMap> = {
-  CASH: "dollar-sign",
-  BANK: "home",
-  CREDIT_CARD: "credit-card",
-  SAVINGS: "shield",
+type LucideIcon = React.FC<LucideProps>;
+const ACCOUNT_ICON: Record<AccountType, LucideIcon> = {
+  CASH: DollarSign,
+  BANK: Home,
+  CREDIT_CARD: CreditCard,
+  SAVINGS: Shield,
 };
+
 
 function SectionLabel({ children }: { children: string }) {
   return (
@@ -40,14 +44,14 @@ function SectionLabel({ children }: { children: string }) {
 }
 
 function Row({
-  icon,
+  icon : Icon,
   label,
   value,
   onPress,
   showChevron = true,
   danger = false,
 }: {
-  icon: keyof typeof Feather.glyphMap;
+  icon: LucideIcon;
   label: string;
   value?: string;
   onPress?: () => void;
@@ -61,7 +65,7 @@ function Row({
       className="flex-row items-center bg-white px-4 py-3.5 border-b border-[#F0EEE7] last:border-b-0"
     >
       <View className="w-8 h-8 rounded-full bg- items-center justify-center mr-3">
-        <Feather name={icon} size={15} color={danger ? "#FF6B4A" : "#5C5F68"} />
+        <Icon size={15} color={danger ? "#FF6B4A" : "#5C5F68"} />
       </View>
       <Text
         className={`flex-1 text-sm ${
@@ -74,7 +78,7 @@ function Row({
         <Text className="text-brand-text-secondary text-xs mr-2">{value}</Text>
       )}
       {showChevron && onPress && (
-        <Feather name="chevron-right" size={16} color="#BDC3C7" />
+        <ChevronRight  size={16} color="#BDC3C7" />
       )}
     </TouchableOpacity>
   );
@@ -208,13 +212,13 @@ export default function ProfileScreen() {
               <Image
                 source={{ uri: user.imageUrl }}
                 style={{ width: 80, height: 80 }}
-                // contentFit="cover"
+                resizeMode="cover"
               />
             ) : (
-              <Feather name="user" size={30} color="#8A8D96" />
+              <User  size={30} color="#8A8D96" />
             )}
             <View className="absolute bottom-0 inset-x-0 h-6 bg-black/50 items-center justify-center">
-              <Feather name="camera" size={13} color="#F2EFE9" />
+              <Camera  size={13} color="#F2EFE9" />
             </View>
           </TouchableOpacity>
 
@@ -222,7 +226,7 @@ export default function ProfileScreen() {
             {user?.firstName} {user?.lastName}
           </Text>
           <View className="flex-row items-center gap-1.5 mt-1">
-            <Feather name="mail" size={11} color="#8A8D96" />
+            <Mail size={11} color="#8A8D96" />
             <Text
               className="text-brand-text-secondary text-xs"
               numberOfLines={1}
@@ -258,9 +262,10 @@ export default function ProfileScreen() {
                 }}
               />
             ))
-          )}
+          )
+          }
           <Row
-            icon="plus"
+            icon={Plus}
             label="Add account"
             onPress={() => {
               setEditingAccount(null);
@@ -273,7 +278,7 @@ export default function ProfileScreen() {
         <SectionLabel>Preferences</SectionLabel>
         <View className="mx-5 rounded-2xl overflow-hidden border border-[#E8E6DF]">
           <Row
-            icon="dollar-sign"
+            icon={DollarSign}
             label="Currency"
             value={currency}
             onPress={() => setCurrencyPickerOpen(true)}
@@ -281,7 +286,7 @@ export default function ProfileScreen() {
 
           <View className="flex-row items-center bg-white px-4 py-3.5">
             <View className="w-8 h-8 rounded-full bg-[#F5F4F0] items-center justify-center mr-3">
-              <Feather name="lock" size={15} color="#5C5F68" />
+              <Lock size={15} color="#5C5F68" />
             </View>
             <Text className="flex-1 text-sm text-brand-bg">Biometric lock</Text>
             <Switch value={biometricLock} onValueChange={setBiometricLock} />
@@ -292,7 +297,7 @@ export default function ProfileScreen() {
         <SectionLabel>Account</SectionLabel>
         <View className="mx-5 rounded-2xl overflow-hidden border border-[#E8E6DF]">
           <Row
-            icon="log-out"
+            icon={LogOut}
             label="Sign out"
             onPress={handleSignOut}
             showChevron={false}

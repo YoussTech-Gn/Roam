@@ -3,17 +3,18 @@ import { useTransactionQuery } from "@/hooks/queries/useTransactionQuery";
 import { useUserStore } from "@/store/userStore";
 import { askAssistant } from "@/utils/services/assistant";
 import { useUser } from "@clerk/expo";
-import { Feather } from "@expo/vector-icons";
+import { ArrowUp } from "lucide-react-native";
+// import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    FlatList,
+    KeyboardAvoidingView,
+    Platform,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -166,7 +167,7 @@ export default function AssistantScreen() {
             className="w-11 h-11 rounded-full bg-brand-bg items-center justify-center"
             style={{ opacity: sending ? 0.6 : 1 }}
           >
-            <Feather name="arrow-up" size={18} color="#fff" />
+            <ArrowUp size={18} color="#fff" />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

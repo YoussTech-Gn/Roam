@@ -1,6 +1,6 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { NativeTabs } from "expo-router/unstable-native-tabs";
+import { CirclePlus, House, List, Sparkles, User } from "lucide-react-native";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -69,11 +69,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons
-              name={focused ? "home" : "home-outline"}
-              size={size}
-              color={color as string}
-            />
+            <House size={size} color={color as string} strokeWidth={focused ? 2.6 : 2} />
           ),
         }}
       />
@@ -82,11 +78,7 @@ export default function TabLayout() {
         options={{
           title: "Transactions",
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons
-              name={focused ? "list" : "list-outline"}
-              size={size}
-              color={color as string}
-            />
+            <List size={size} color={color as string} strokeWidth={focused ? 2.6 : 2} />
           ),
         }}
       />
@@ -94,8 +86,8 @@ export default function TabLayout() {
         name="add-transaction"
         options={{
           title: "Add",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="add-circle" size={size} color={color as string} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <CirclePlus size={size} color={color as string} strokeWidth={focused ? 2.6 : 2} />
           ),
         }}
       />
@@ -103,8 +95,8 @@ export default function TabLayout() {
         name="assistant"
         options={{
           title: "Assistant",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="sparkles" size={size} color={color as string} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Sparkles size={size} color={color as string} strokeWidth={focused ? 2.6 : 2} />
           ),
         }}
       />
@@ -112,8 +104,8 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color as string} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <User size={size} color={color as string} strokeWidth={focused ? 2.6 : 2} />
           ),
         }}
       />
