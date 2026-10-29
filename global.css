@@ -69,3 +69,16 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-simple-text: var(--simple-text);
 }
+
+@theme {
+  --color-brand-bg: #0b0e14;
+  --color-brand-body: #f5f4f0;
+  --color-brand-surface: #141822;
+  --color-brand-surface-border: #232838;
+  --color-brand-text-primary: #f2efe9;
+  --color-brand-text-secondary: #8a8d96;
+  --color-brand-text-muted: #5c5f68;
+  --color-brand-blue: #1a85ff;
+  --color-brand-coral: #ff6b4a;
+  --color-brand-success: #3ddc84;
+}

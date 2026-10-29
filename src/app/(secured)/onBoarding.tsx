@@ -5,8 +5,8 @@ import CustomInput from "@/src/components/InputField";
 import { useUserSync } from "@/src/hooks/useUserSync";
 import { useUserStore } from "@/store/userStore";
 import {
-  OnboardingFormValues,
-  onboardingSchema,
+    OnboardingFormValues,
+    onboardingSchema,
 } from "@/utils/schemas/onboarding";
 import { useUser } from "@clerk/expo";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,11 +14,11 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  View,
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    Text,
+    View,
 } from "react-native";
 
 const GENERIC_ERROR = "Something went wrong. Please try again.";
